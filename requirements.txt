@@ -1,4 +1,3 @@
-# From repo
 fts3-rest
 git+https://github.com/DIRACGrid/pyGSI.git#egg=GSI
 
