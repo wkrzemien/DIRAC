@@ -7,14 +7,7 @@ services:
   - rabbitmq
   
 env:
-  global:
-    - RABBITMQ_HOST=localhost RABBITMQ_PORT=61613 RABBITMQ_USER=ala RABBITMQ_PASSWORD=ala
-  matrix:
-    - CHECK=pytest
-    - CHECK=docs
-    - CHECK=pylint
-    - CHECK=format
-# command to install dependencies
+  - RABBITMQ_HOST=localhost RABBITMQ_PORT=61613 RABBITMQ_USER=ala RABBITMQ_PASSWORD=ala
 install:
   - "sudo rabbitmq-plugins enable rabbitmq_stomp"
   - "pip install --upgrade setuptools"
@@ -22,20 +15,21 @@ install:
   - "pip install -r requirements.txt"
 # command to run tests
 script:
-  - export PYTHONPATH=${PWD%/*}
-  - ls $PYTHONPATH
-  - if [[ "${CHECK}" == "pytest"  ]];
-    then pytest DIRAC/Resources/MessageQueue/test/Test_MQCommunication.py
-    elif [[ "${CHECK}" == "docs"  ]];
-    then cd docs; READTHEDOCS=True make html;
-    elif [[ "${CHECK}" == "pylint"  ]];
-    then travis_wait 30 .travis.d/runPylint.sh;
-    elif [[ "${CHECK}" == "format" ]] && [[ "${TRAVIS_PULL_REQUEST}" != "false" ]];
-    then git remote add GH https://github.com/DIRACGrid/DIRAC.git; git fetch --no-tags GH ${TRAVIS_BRANCH}; git branch -vv; git diff -U0 GH/${TRAVIS_BRANCH} | pycodestyle --diff;
-    fi
+  - pytest DIRAC/Resources/MessageQueue/test/Test_MQCommunication.py
+  #- export PYTHONPATH=${PWD%/*}
+  #- ls $PYTHONPATH
+  #- if [[ "${CHECK}" == "pytest"  ]];
+    #then pytest DIRAC/Resources/MessageQueue/test/Test_MQCommunication.py
+    #elif [[ "${CHECK}" == "docs"  ]];
+    #then cd docs; READTHEDOCS=True make html;
+    #elif [[ "${CHECK}" == "pylint"  ]];
+    #then travis_wait 30 .travis.d/runPylint.sh;
+    #elif [[ "${CHECK}" == "format" ]] && [[ "${TRAVIS_PULL_REQUEST}" != "false" ]];
+    #then git remote add GH https://github.com/DIRACGrid/DIRAC.git; git fetch --no-tags GH ${TRAVIS_BRANCH}; git branch -vv; git diff -U0 GH/${TRAVIS_BRANCH} | pycodestyle --diff;
+    #fi
 
 ## ignore errors for sourcefiles "-i"
-after_success:
-  - if [[ "${CHECK}" == "pytest"  ]];
-    then coveralls -i;
-    fi
+#after_success:
+  #- if [[ "${CHECK}" == "pytest"  ]];
+    #then coveralls -i;
+    #fi
