@@ -32,8 +32,8 @@ Resources
       Host = localhost
       VHost = /
       Port = 61613
-      User = ala
-      Password = ala
+      User = guest
+      Password = guest
       Queues
       {
         test1
@@ -63,8 +63,8 @@ Resources
       SSLVersion = TLSv1
       HostCertificate =
       HostKey =
-      User = ala
-      Password = ala
+      User = guest
+      Password = guest
       Queues
       {
         test4
@@ -85,8 +85,8 @@ def pseudoCS(mqURI):
       'MQType': 'Stomp',
       'Host': 'localhost',
       'Port': '61613',
-      'User': 'ala',
-      'Password': 'ala',
+      'User': 'guest',
+      'Password': 'guest',
       'Acknowledgement ': 'False'}
   paramsQ2 = {
       'VHost': '/',
@@ -94,8 +94,8 @@ def pseudoCS(mqURI):
       'MQType': 'Stomp',
       'Host': 'localhost',
       'Port': '61613',
-      'User': 'ala',
-      'Password': 'ala',
+      'User': 'guest',
+      'Password': 'guest',
       'Acknowledgement ': 'False'}
   paramsT3 = {
       'VHost': '/',
@@ -103,8 +103,8 @@ def pseudoCS(mqURI):
       'MQType': 'Stomp',
       'Host': 'localhost',
       'Port': '61613',
-      'User': 'ala',
-      'Password': 'ala',
+      'User': 'guest',
+      'Password': 'guest',
       'Acknowledgement ': 'False'}
   paramsQ4 = {
       'VHost': '/',
@@ -112,8 +112,8 @@ def pseudoCS(mqURI):
       'MQType': 'Stomp',
       'Host': 'localhost',
       'Port': '61613',
-      'User': 'ala',
-      'Password': 'ala',
+      'User': 'guest',
+      'Password': 'guest',
       'Acknowledgement ': 'False'}
   if mqURI == 'mardirac3.in2p3.fr::Queue::test1':
     return S_OK(paramsQ1)
