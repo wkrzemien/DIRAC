@@ -25,7 +25,7 @@ script:
   - export PYTHONPATH=${PWD%/*}
   - ls $PYTHONPATH
   - if [[ "${CHECK}" == "pytest"  ]];
-    then pytest;
+    then pytest DIRAC/Resources/MessageQueue/test/Test_MQCommunication.py
     elif [[ "${CHECK}" == "docs"  ]];
     then cd docs; READTHEDOCS=True make html;
     elif [[ "${CHECK}" == "pylint"  ]];
