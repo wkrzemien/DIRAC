@@ -16,7 +16,7 @@ install:
 # command to run tests
 script:
   - export PYTHONPATH=${PWD%/*}
-  - pytest DIRAC/Resources/MessageQueue/test/Test_MQCommunication.py
+  - pytest Resources/MessageQueue/test/Test_MQCommunication.py
   #- ls $PYTHONPATH
   #- if [[ "${CHECK}" == "pytest"  ]];
     #then pytest DIRAC/Resources/MessageQueue/test/Test_MQCommunication.py
