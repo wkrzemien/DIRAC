@@ -15,11 +15,11 @@ import DIRAC.Resources.MessageQueue.MQCommunication as MQComm
 from DIRAC import S_OK, S_ERROR
 import DIRAC.Resources.MessageQueue.Utilities as moduleUtils
 
-root = logging.getLogger()
-root.setLevel(logging.DEBUG)
+# root = logging.getLogger()
+# root.setLevel(logging.DEBUG)
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
+# handler = logging.StreamHandler(sys.stdout)
+# handler.setLevel(logging.DEBUG)
 
 TEST_CONFIG = """
 Resources
@@ -115,13 +115,13 @@ def pseudoCS(mqURI):
       'User': 'ala',
       'Password': 'ala',
       'Acknowledgement ': 'False'}
-  if mqURI == 'mardirac3.in2p3.fr::Queues::test1':
+  if mqURI == 'mardirac3.in2p3.fr::Queue::test1':
     return S_OK(paramsQ1)
-  elif mqURI == 'mardirac3.in2p3.fr::Queues::test2':
+  elif mqURI == 'mardirac3.in2p3.fr::Queue::test2':
     return S_OK(paramsQ2)
-  elif mqURI == 'mardirac3.in2p3.fr::Topics::test1':
+  elif mqURI == 'mardirac3.in2p3.fr::Topic::test1':
     return S_OK(paramsT3)
-  elif mqURI == 'testdir.blabla.ch::Queues::test4':
+  elif mqURI == 'testdir.blabla.ch::Queue::test4':
     return S_OK(paramsT3)
   else:
     return S_ERROR("Bad mqURI")
@@ -144,20 +144,20 @@ class TestMQCommunication_myProducer(TestMQCommunication):
 
   @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
   def test_success(self, mock_getMQParamsFromCS):
-    result = createProducer(mqURI='mardirac3.in2p3.fr::Queues::test1')
+    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test1')
     self.assertTrue(result['OK'])
     producer = result['Value']
     result = producer.put('blabla')
     self.assertTrue(result['OK'])
     result = producer.put('blable')
-    result = createProducer(mqURI='mardirac3.in2p3.fr::Queues::test2')
+    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test2')
     self.assertTrue(result['OK'])
     producer2 = result['Value']
     result = producer2.put('blabla2')
     self.assertTrue(result['OK'])
     result = producer2.put('blable2')
     self.assertTrue(result['OK'])
-    result = createProducer(mqURI='testdir.blabla.ch::Queues::test4')
+    result = createProducer(mqURI='testdir.blabla.ch::Queue::test4')
     self.assertTrue(result['OK'])
     producer3 = result['Value']
     result = producer3.put('blabla3')
@@ -204,8 +204,8 @@ class TestMQCommunication_myConsumer(TestMQCommunication):
 
   @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
   def test_success(self, mock_getMQParamsFromCS):
-    consumer = createConsumer(mqURI='mardirac3.in2p3.fr::Queues::test1')['Value']
-    producer = createProducer(mqURI='mardirac3.in2p3.fr::Queues::test1')['Value']
+    consumer = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test1')['Value']
+    producer = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test1')['Value']
     result = producer.put('blabla2')
     self.assertTrue(result['OK'])
     result = producer.put('blable3')
@@ -256,11 +256,11 @@ class TestMQCommunication_myConsumer2(TestMQCommunication):
 
   @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
   def test_success(self, mock_getMQParamsFromCS):
-    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queues::test1')
+    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test1')
     self.assertTrue(result['OK'])
     consumer = result['Value']
 
-    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queues::test1')
+    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test1')
     self.assertTrue(result['OK'])
     consumer2 = result['Value']
 
@@ -270,7 +270,7 @@ class TestMQCommunication_myConsumer2(TestMQCommunication):
     expected = ['mardirac3.in2p3.fr/queue/test1/consumer1', 'mardirac3.in2p3.fr/queue/test1/consumer2']
     self.assertEqual(sorted(messengers), sorted(expected))
 
-    result = createProducer(mqURI='mardirac3.in2p3.fr::Queues::test1')
+    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test1')
     self.assertTrue(result['OK'])
     producer = result['Value']
 
@@ -278,7 +278,7 @@ class TestMQCommunication_myConsumer2(TestMQCommunication):
     self.assertTrue(result['OK'])
     time.sleep(2)
 
-    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queues::test2')
+    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test2')
     self.assertTrue(result['OK'])
     consumer3 = result['Value']
 
@@ -292,7 +292,7 @@ class TestMQCommunication_myConsumer2(TestMQCommunication):
         'mardirac3.in2p3.fr/queue/test2/consumer3']
     self.assertEqual(sorted(messengers), sorted(expected))
 
-    result = createProducer(mqURI='mardirac3.in2p3.fr::Queues::test2')
+    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test2')
     self.assertTrue(result['OK'])
     producer2 = result['Value']
 
@@ -332,11 +332,11 @@ class TestMQCommunication_myConsumer3(TestMQCommunication):
 
   @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
   def test_success(self, mock_getMQParamsFromCS):
-    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queues::test1')
+    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test1')
     self.assertTrue(result['OK'])
     consumer = result['Value']
 
-    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queues::test2')
+    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test2')
     self.assertTrue(result['OK'])
     consumer3 = result['Value']
 
@@ -358,7 +358,7 @@ class TestMQCommunication_myProducer2(TestMQCommunication):
 
   @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
   def test_success(self, mock_getMQParamsFromCS):
-    result = createProducer(mqURI='mardirac3.in2p3.fr::Queues::test1')
+    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test1')
     self.assertTrue(result['OK'])
     producer = result['Value']
     result = producer.put('blabla')
@@ -394,7 +394,7 @@ class TestMQCommunication_myProducer3(TestMQCommunication):
 
   @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
   def test_success(self, mock_getMQParamsFromCS):
-    result = createProducer(mqURI='mardirac3.in2p3.fr::Queues::test1')
+    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test1')
     self.assertTrue(result['OK'])
     producer = result['Value']
     result = producer.put('blabla')
