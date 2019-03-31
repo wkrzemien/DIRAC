@@ -3,17 +3,17 @@ language: python
 python:
   - "2.7"
 
-
 services:
   - rabbitmq
   
 env:
+  global:
+    - RABBITMQ_HOST=localhost RABBITMQ_PORT=61613 RABBITMQ_USER=ala RABBITMQ_PASSWORD=ala
   matrix:
     - CHECK=pytest
     - CHECK=docs
     - CHECK=pylint
     - CHECK=format
-  - RABBITMQ_HOST=localhost RABBITMQ_PORT=61613 RABBITMQ_USER=ala RABBITMQ_PASSWORD=ala
 # command to install dependencies
 install:
   - "sudo rabbitmq-plugins enable rabbitmq_stomp"
