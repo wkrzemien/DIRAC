@@ -420,13 +420,38 @@ class TestMQCommunication_myProducer3(TestMQCommunication):
     expected = []
     self.assertEqual(sorted(messengers), sorted(expected))
 
+class TestMQCommunication_myProducer4(TestMQCommunication):
+  def setUp(self):
+    MQComm.connectionManager.removeAllConnections()
+
+  def tearDown(self):
+    MQComm.connectionManager.removeAllConnections()
+
+  @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
+  def test_success(self, mock_getMQParamsFromCS):
+    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test1')
+    self.assertTrue(result['OK'])
+    producer = result['Value']
+    result = producer.put('blabla')
+    self.assertTrue(result['OK'])
+    result = producer._connectionManager.getAllMessengers()
+    self.assertTrue(result['OK'])
+    messengers = result['Value']
+    expected = ['mardirac3.in2p3.fr/queue/test1/producer1']
+
+    result = producer.close()
+    self.assertTrue(result['OK'])
+    result = producer._connectionManager.getAllMessengers()
+    self.assertTrue(result['OK'])
+    messengers = result['Value']
+    expected = []
+    self.assertEqual(sorted(messengers), sorted(expected))
 
 if __name__ == '__main__':
-  suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myProducer2)
   suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication)
-  suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myProducer2))
   suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myConsumer))
   suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myConsumer2))
   suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myConsumer3))
   suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myProducer2))
+  suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myProducer4))
   testResult = unittest.TextTestRunner(verbosity=2).run(suite)
