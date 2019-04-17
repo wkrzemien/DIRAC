@@ -133,6 +133,11 @@ def pseudocreateMQConnector(parameters=None):
   obj = MyStompConnector(parameters)
   return S_OK(obj)
 
+def stopServer():
+  os.system("rabbitmqctl stop_app") 
+
+def startServer():
+  os.system("rabbitmqctl start_app") 
 
 class TestMQCommunication(unittest.TestCase):
   def setUp(self):
@@ -198,7 +203,38 @@ class TestMQCommunication_myProducer(TestMQCommunication):
     time.sleep(20)
     self.assertFalse(TestMQCommunication_myProducer.reconnectWasCalled)
 
+class TestMQCommunication_myProducer2(TestMQCommunication):
+
+
+  def setUp(self):
+    MQComm.connectionManager.removeAllConnections()
+
+  def tearDown(self):
+    MQComm.connectionManager.removeAllConnections()
+
+  @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
+  def test_success(self, mock_getMQParamsFromCS):
+    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test1')
+    self.assertTrue(result['OK'])
+    producer = result['Value']
+    result = producer.put('blabla')
+    self.assertTrue(result['OK'])
+    stopServer()
+    time.sleep(5)
+    startServer()
+    result = producer.put('blabla')
+    self.assertTrue(result['OK'])
+
+    result = producer.close()
+    self.assertTrue(result['OK'])
+    result = producer._connectionManager.getAllMessengers()
+    self.assertTrue(result['OK'])
+    messengers = result['Value']
+    expected = []
+    self.assertEqual(sorted(messengers), sorted(expected))
+
 if __name__ == '__main__':
   suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication)
   suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myProducer))
+  suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myProducer2))
   testResult = unittest.TextTestRunner(verbosity=2).run(suite)
