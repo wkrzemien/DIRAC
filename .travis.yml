@@ -17,6 +17,13 @@ install:
 script:
   - export PYTHONPATH=${PWD%/*}
   - pytest Resources/MessageQueue/test/Test_MQCommunication.py
+  - pytest Resources/MessageQueue/test/Test_ActiveClose.py
+  - pytest Resources/MessageQueue/test/Test_MQConnectionManager.py
+  - pytest Resources/MessageQueue/test/Test_MQProducer.py
+  - pytest Resources/MessageQueue/test/Test_MQConsumer.py
+  - pytest Resources/MessageQueue/test/Test_StompMQConnection.py
+  - pytest Resources/MessageQueue/test/Test_MQ_Utilities.py
+
   #- ls $PYTHONPATH
   #- if [[ "${CHECK}" == "pytest"  ]];
     #then pytest DIRAC/Resources/MessageQueue/test/Test_MQCommunication.py
