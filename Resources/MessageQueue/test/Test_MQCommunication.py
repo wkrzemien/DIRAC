@@ -220,7 +220,7 @@ class TestMQCommunication_myConsumer(TestMQCommunication):
     time.sleep(5)  # because in connect method there is 1 second sleep introduced
     result = consumer.get()
     self.assertTrue(result['OK'])
-    time.sleep(30)
+    time.sleep(5)
 
     result = consumer.get()
     self.assertTrue(result['OK'])
@@ -303,8 +303,6 @@ class TestMQCommunication_myConsumer2(TestMQCommunication):
     self.assertTrue(result['OK'])
     result = consumer2.close()
     self.assertTrue(result['OK'])
-    time.sleep(4)
-    time.sleep(30)
 
     recMsgs = []
     while True:
@@ -364,9 +362,6 @@ class TestMQCommunication_myProducer2(TestMQCommunication):
     result = producer.put('blabla')
     self.assertTrue(result['OK'])
 
-    time.sleep(30)
-    # now we shutdown the server
-
     result = producer.put('blabla')
     self.assertTrue(result['OK'])
 
@@ -399,9 +394,6 @@ class TestMQCommunication_myProducer3(TestMQCommunication):
     producer = result['Value']
     result = producer.put('blabla')
     self.assertTrue(result['OK'])
-
-    time.sleep(30)
-    # now we shutdown the server
 
     result = producer.put('blabla')
     self.assertTrue(result['OK'])
