@@ -9,6 +9,7 @@ services:
 env:
   - RABBITMQ_HOST=localhost RABBITMQ_PORT=61613 RABBITMQ_USER=ala RABBITMQ_PASSWORD=ala
 install:
+  - "sudo rabbitmqctl status"
   - "sudo rabbitmq-plugins enable rabbitmq_stomp"
   - "pip install --upgrade setuptools"
   - "pip install --upgrade pip"
