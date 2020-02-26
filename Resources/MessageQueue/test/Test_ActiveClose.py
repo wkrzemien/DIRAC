@@ -257,7 +257,7 @@ class TestMQCommunication_myProducer3(TestMQCommunication):
 
     result = producer.close()
     self.assertTrue(result['OK'])
-    result = producer.connectionManager.getAllMessengers()
+    result = producer._connectionManager.getAllMessengers()
     self.assertTrue(result['OK'])
     messengers = result['Value']
     expected = []
