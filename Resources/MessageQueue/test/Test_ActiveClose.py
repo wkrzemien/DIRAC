@@ -11,13 +11,14 @@ from DIRAC.Resources.MessageQueue.StompMQConnector import StompMQConnector as My
 from DIRAC import S_OK, S_ERROR
 import DIRAC.Resources.MessageQueue.Utilities as moduleUtils
 import logging
+import os
 import sys
 
-root = logging.getLogger()
-root.setLevel(logging.DEBUG)
+# root = logging.getLogger()
+# root.setLevel(logging.DEBUG)
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
+# handler = logging.StreamHandler(sys.stdout)
+# handler.setLevel(logging.DEBUG)
 
 TEST_CONFIG = """
 Resources

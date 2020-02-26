@@ -247,78 +247,78 @@ class TestMQCommunication_myConsumer(TestMQCommunication):
     self.assertFalse(result['OK'])
 
 
-class TestMQCommunication_myConsumer2(TestMQCommunication):
+# class TestMQCommunication_myConsumer2(TestMQCommunication):
 
-  def setUp(self):
-    MQComm.connectionManager.removeAllConnections()
+  # def setUp(self):
+    # MQComm.connectionManager.removeAllConnections()
 
-  def tearDown(self):
-    MQComm.connectionManager.removeAllConnections()
+  # def tearDown(self):
+    # MQComm.connectionManager.removeAllConnections()
 
-  @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
-  def test_success(self, mock_getMQParamsFromCS):
-    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test1')
-    self.assertTrue(result['OK'])
-    consumer = result['Value']
+  # @mock.patch('DIRAC.Resources.MessageQueue.MQCommunication.getMQParamsFromCS', side_effect=pseudoCS)
+  # def test_success(self, mock_getMQParamsFromCS):
+    # result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test1')
+    # self.assertTrue(result['OK'])
+    # consumer = result['Value']
 
-    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test1')
-    self.assertTrue(result['OK'])
-    consumer2 = result['Value']
+    # result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test1')
+    # self.assertTrue(result['OK'])
+    # consumer2 = result['Value']
 
-    result = consumer._connectionManager.getAllMessengers()
-    self.assertTrue(result['OK'])
-    messengers = result['Value']
-    expected = ['mardirac3.in2p3.fr/queue/test1/consumer1', 'mardirac3.in2p3.fr/queue/test1/consumer2']
-    self.assertEqual(sorted(messengers), sorted(expected))
+    # result = consumer._connectionManager.getAllMessengers()
+    # self.assertTrue(result['OK'])
+    # messengers = result['Value']
+    # expected = ['mardirac3.in2p3.fr/queue/test1/consumer1', 'mardirac3.in2p3.fr/queue/test1/consumer2']
+    # self.assertEqual(sorted(messengers), sorted(expected))
 
-    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test1')
-    self.assertTrue(result['OK'])
-    producer = result['Value']
+    # result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test1')
+    # self.assertTrue(result['OK'])
+    # producer = result['Value']
 
-    result = producer.put('blabla')
-    self.assertTrue(result['OK'])
-    time.sleep(2)
+    # result = producer.put('blabla')
+    # self.assertTrue(result['OK'])
+    # time.sleep(2)
 
-    result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test2')
-    self.assertTrue(result['OK'])
-    consumer3 = result['Value']
+    # result = createConsumer(mqURI='mardirac3.in2p3.fr::Queue::test2')
+    # self.assertTrue(result['OK'])
+    # consumer3 = result['Value']
 
-    result = consumer._connectionManager.getAllMessengers()
-    self.assertTrue(result['OK'])
-    messengers = result['Value']
-    expected = [
-        'mardirac3.in2p3.fr/queue/test1/consumer1',
-        'mardirac3.in2p3.fr/queue/test1/consumer2',
-        'mardirac3.in2p3.fr/queue/test1/producer1',
-        'mardirac3.in2p3.fr/queue/test2/consumer3']
-    self.assertEqual(sorted(messengers), sorted(expected))
+    # result = consumer._connectionManager.getAllMessengers()
+    # self.assertTrue(result['OK'])
+    # messengers = result['Value']
+    # expected = [
+        # 'mardirac3.in2p3.fr/queue/test1/consumer1',
+        # 'mardirac3.in2p3.fr/queue/test1/consumer2',
+        # 'mardirac3.in2p3.fr/queue/test1/producer1',
+        # 'mardirac3.in2p3.fr/queue/test2/consumer3']
+    # self.assertEqual(sorted(messengers), sorted(expected))
 
-    result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test2')
-    self.assertTrue(result['OK'])
-    producer2 = result['Value']
+    # result = createProducer(mqURI='mardirac3.in2p3.fr::Queue::test2')
+    # self.assertTrue(result['OK'])
+    # producer2 = result['Value']
 
-    result = producer2.put('blabla2')
-    self.assertTrue(result['OK'])
+    # result = producer2.put('blabla2')
+    # self.assertTrue(result['OK'])
 
-    result = consumer.close()
-    self.assertTrue(result['OK'])
-    result = consumer2.close()
-    self.assertTrue(result['OK'])
+    # result = consumer.close()
+    # self.assertTrue(result['OK'])
+    # result = consumer2.close()
+    # self.assertTrue(result['OK'])
 
-    recMsgs = []
-    while True:
-      result = consumer3.get()
-      if result['OK']:
-        recMsgs.append(result['Value'])
-      else:
-        break
-    self.assertTrue(set(['blabla', 'blabla2']) <= set(recMsgs))
+    # recMsgs = []
+    # while True:
+      # result = consumer3.get()
+      # if result['OK']:
+        # recMsgs.append(result['Value'])
+      # else:
+        # break
+    # self.assertTrue(set(['blabla', 'blabla2']) <= set(recMsgs))
 
-    result = consumer3.close()
-    self.assertTrue(result['OK'])
+    # result = consumer3.close()
+    # self.assertTrue(result['OK'])
 
-    producer.close()
-    producer2.close()
+    # producer.close()
+    # producer2.close()
 
 
 class TestMQCommunication_myConsumer3(TestMQCommunication):
@@ -443,7 +443,7 @@ class TestMQCommunication_myProducer4(TestMQCommunication):
 if __name__ == '__main__':
   suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication)
   suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myConsumer))
-  suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myConsumer2))
+  # suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myConsumer2))
   suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myConsumer3))
   suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myProducer2))
   suite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(TestMQCommunication_myProducer4))
