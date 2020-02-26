@@ -1,6 +1,7 @@
 """Unit tests of MQCommunication interface in the DIRAC.Resources.MessageQueue.MQCommunication
 """
 
+import os
 import logging
 import sys
 import unittest
