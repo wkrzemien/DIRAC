@@ -1,0 +1,45 @@
+os: linux
+dist: trusty
+sudo: required
+language: python
+python:
+  - "2.7"
+
+services:
+  - rabbitmq
+  
+env:
+  - RABBITMQ_HOST=localhost RABBITMQ_PORT=61613 RABBITMQ_USER=ala RABBITMQ_PASSWORD=ala
+install:
+  - "sudo rabbitmqctl status"
+  - "sudo rabbitmq-plugins enable rabbitmq_stomp"
+  - "pip install --upgrade setuptools"
+  - "pip install --upgrade pip"
+  - "pip install -r requirements.txt"
+# command to run tests
+script:
+  - export PYTHONPATH=${PWD%/*}
+  - pytest Resources/MessageQueue/test/Test_MQCommunication.py
+  - pytest Resources/MessageQueue/test/Test_ActiveClose.py
+  - pytest Resources/MessageQueue/test/Test_MQConnectionManager.py
+  - pytest Resources/MessageQueue/test/Test_MQProducer.py
+  - pytest Resources/MessageQueue/test/Test_MQConsumer.py
+  - pytest Resources/MessageQueue/test/Test_StompMQConnection.py
+  - pytest Resources/MessageQueue/test/Test_MQ_Utilities.py
+
+  #- ls $PYTHONPATH
+  #- if [[ "${CHECK}" == "pytest"  ]];
+    #then pytest DIRAC/Resources/MessageQueue/test/Test_MQCommunication.py
+    #elif [[ "${CHECK}" == "docs"  ]];
+    #then cd docs; READTHEDOCS=True make html;
+    #elif [[ "${CHECK}" == "pylint"  ]];
+    #then travis_wait 30 .travis.d/runPylint.sh;
+    #elif [[ "${CHECK}" == "format" ]] && [[ "${TRAVIS_PULL_REQUEST}" != "false" ]];
+    #then git remote add GH https://github.com/DIRACGrid/DIRAC.git; git fetch --no-tags GH ${TRAVIS_BRANCH}; git branch -vv; git diff -U0 GH/${TRAVIS_BRANCH} | pycodestyle --diff;
+    #fi
+
+## ignore errors for sourcefiles "-i"
+#after_success:
+  #- if [[ "${CHECK}" == "pytest"  ]];
+    #then coveralls -i;
+    #fi
