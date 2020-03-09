@@ -16,7 +16,7 @@ jobs:
         rabbitmq password: 'ala'
     - name: Run tests
       run: |
-        /usr/sbin/rabbitmqctl status
-        /usr/sbin/rabbitmq-plugins enable rabbitmq_stomp
+        #/usr/sbin/rabbitmqctl status
+        #/usr/sbin/rabbitmq-plugins enable rabbitmq_stomp
         export PYTHONPATH=${PWD%/*}
         pytest Resources/MessageQueue/test/Test_MQCommunication.py
