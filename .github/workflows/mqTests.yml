@@ -1,0 +1,30 @@
+name: MQtests 
+
+on: [push, pull_request]
+
+jobs:
+  diracInstall:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: False
+      python: 2.7.13
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: prepare environment
+        with:
+          rabbitmq version: '3.8.2-management-alpine'
+          host port: 5672
+          rabbitmq user: 'ala'
+          rabbitmq password: 'ala'
+        run: |
+          - "sudo rabbitmqctl status"
+          - "sudo rabbitmq-plugins enable rabbitmq_stomp"
+          
+      - name: run tests 
+        run: |
+          - export PYTHONPATH=${PWD%/*}
+          - pytest Resources/MessageQueue/test/Test_MQCommunication.py
+        #eval "$(conda shell.bash hook)" && conda activate python_${{ matrix.python }}
+        #python Core/scripts/dirac-install.py -l DIRAC -r integration -t server  --dirac-os -m https://github.com/zmathe/DIRAC.git:::DIRAC:::pcompatibility -ddd
