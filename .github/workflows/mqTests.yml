@@ -14,9 +14,15 @@ jobs:
         host port: 5672
         rabbitmq user: 'ala'
         rabbitmq password: 'ala'
+    - name: Prepare environment
+      run: |
+        conda env create --name dirac-testing environment.yml
     - name: Run tests
       run: |
         #/usr/sbin/rabbitmqctl status
         #/usr/sbin/rabbitmq-plugins enable rabbitmq_stomp
+        source "${CONDA}/bin/activate"
+        conda activate dirac-testing
+        set -euxo pipefail
         export PYTHONPATH=${PWD%/*}
         pytest Resources/MessageQueue/test/Test_MQCommunication.py
