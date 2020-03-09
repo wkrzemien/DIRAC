@@ -7,15 +7,16 @@ jobs:
     name: FirstTest
     runs-on: ubuntu-latest
     steps:
-      - name: prepare environment
-        uses: actions/checkout@v1
-        with:
-          rabbitmq version: '3.8.2-management-alpine'
-          host port: 5672
-          rabbitmq user: 'ala'
-          rabbitmq password: 'ala'
-        run: |
-          - rabbitmqctl status
-          - rabbitmq-plugins enable rabbitmq_stomp
-          - export PYTHONPATH=${PWD%/*}
-          - pytest Resources/MessageQueue/test/Test_MQCommunication.py
+    - uses: actions/checkout@v1
+    - uses: getong/checkout@v1.2
+      with:
+        rabbitmq version: '3.8.2-management-alpine'
+        host port: 5672
+        rabbitmq user: 'ala'
+        rabbitmq password: 'ala'
+    - name: Run tests
+      run: |
+        rabbitmqctl status
+        rabbitmq-plugins enable rabbitmq_stomp
+        export PYTHONPATH=${PWD%/*}
+        pytest Resources/MessageQueue/test/Test_MQCommunication.py
